@@ -46,7 +46,6 @@ def construir_libro(datos_libro):
         id= datos_libro["id"],
         fuente = "google"
     )
-    print(libro)
 
     return libro
 
@@ -84,19 +83,17 @@ def concatenar_atributos(libro) -> str:
 class GoogleRepository:
     async def search(self, book_search):    
         busqueda = concatenar_atributos(book_search)
-        url =  "https://www.googleapis.com/books/v1/volumes"
         params = {'q': busqueda}
         async with httpx.AsyncClient() as client:
-            response = await client.get(url, params = params)
+            response = await client.get(base_url, params = params)
             if response.status_code == 200:
                 response= response.json()
                 lista_libros = [item for item in response["items"]]        
                 libros = construir_libros(lista_libros)
                 return libros
     async def search_by_id(self, id):    
-        url =  "https://www.googleapis.com/books/v1/volumes"
         async with httpx.AsyncClient() as client:
-            response = await client.get(url+'/'+id)
+            response = await client.get(base_url+'/'+id)
             if response.status_code == 200:
                 response= response.json()
                 response = construir_libro(response)

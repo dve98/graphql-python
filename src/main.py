@@ -3,8 +3,10 @@ from fastapi import FastAPI
 from strawberry.fastapi import GraphQLRouter
 from infra.graphql.query import Query
 from infra.graphql.mutation import Mutation
-
+from infra.database.config import DatabaseSession
 def init_app():
+    db = DatabaseSession()
+
     apps = FastAPI(
         title="Biblioteca David",
         description="Fast API",
@@ -13,20 +15,19 @@ def init_app():
 
     @apps.on_event("startup")
     async def startup():
-        print("asd")
-        # await db.startup()
+        print("Hola")
 
 
     @apps.on_event("shutdown")
     async def shutdown():
-        print("asd")
-        # await db.shutdown()
+        print("Adios")
+        await db.close()
 
     @apps.get("/")
     async def read_root():
 
 
-        return "prueba"
+        return "El servicio está funcionando, ingresa a /graphql para acceder a graphiql"
         # return "rows"
 
     schema = strawberry.Schema(query=Query, mutation = Mutation)

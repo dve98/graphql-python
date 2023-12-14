@@ -7,26 +7,16 @@ import os
 
 # Load variables from .env file
 
-DB_CONFIG = "mysql+aiomysql://admin:McYpqCjeZNyaz5c3MyZv@prueba.cnortkp3xvjv.us-east-1.rds.amazonaws.com:3306/biblioteca"
 
-# DB_CONFIG = os.environ['DB_CONFIG']
+DB_CONFIG = os.environ['DB_CONFIG']
 class DatabaseSession:
     def __init__(self, url: str = DB_CONFIG):
-        self.engine = create_async_engine(url, echo=True)
+        self.engine = create_async_engine(url)
         self.SessionLocal = sessionmaker(
             bind=self.engine,
             class_=AsyncSession,
             expire_on_commit=False,
         )
-
-    # Generating models into a database
-    async def create_all(self):
-        async with self.engine.begin() as conn:
-            await conn.run_sync(SQLModel.metadata.create_all)
-
-    async def drop_all(self):
-        async with self.engine.begin() as conn:
-            await conn.run_sync(SQLModel.metadata.drop_all)
 
     # close connection
     async def close(self):
