@@ -81,15 +81,17 @@ def concatenar_atributos(libro) -> str:
     return '+'.join(parametros)
 
 class GoogleRepository:
-    async def search(self, book_search):    
+    async def search(self, book_search, number_of_books):    
         busqueda = concatenar_atributos(book_search)
-        params = {'q': busqueda}
+        params = {'q': busqueda,
+                    'maxResults':number_of_books}
         async with httpx.AsyncClient() as client:
             response = await client.get(base_url, params = params)
             if response.status_code == 200:
                 response= response.json()
                 lista_libros = [item for item in response["items"]]        
                 libros = construir_libros(lista_libros)
+                
                 return libros
     async def search_by_id(self, id):    
         async with httpx.AsyncClient() as client:
@@ -97,6 +99,7 @@ class GoogleRepository:
             if response.status_code == 200:
                 response= response.json()
                 response = construir_libro(response)
-                
                 return response
+            else:
+                return None
 google_repository = GoogleRepository()

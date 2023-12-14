@@ -21,7 +21,7 @@ class BookRepository:
 
             return books
     
-    async def search_by_any(self,book_search):
+    async def search_by_any(self,book_search, number_of_books):
         nombre_autor: str = book_search.autor
         nombre_categoria: str = book_search.categoria
         titulo_libro: str = book_search.titulo
@@ -35,6 +35,7 @@ class BookRepository:
                     selectinload(Libro.autores),
                     selectinload(Libro.categorias),
                 )
+                .limit(number_of_books)
             )
 
             if nombre_autor:
