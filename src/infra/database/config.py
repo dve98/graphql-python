@@ -7,9 +7,9 @@ import os
 
 # Load variables from .env file
 
-# DB_CONFIG = "mysql+aiomysql://admin:McYpqCjeZNyaz5c3MyZv@prueba.cnortkp3xvjv.us-east-1.rds.amazonaws.com:3306/biblioteca"
+DB_CONFIG = "mysql+aiomysql://admin:McYpqCjeZNyaz5c3MyZv@prueba.cnortkp3xvjv.us-east-1.rds.amazonaws.com:3306/biblioteca"
 
-DB_CONFIG = os.environ['DB_CONFIG']
+# DB_CONFIG = os.environ['DB_CONFIG']
 class DatabaseSession:
     def __init__(self, url: str = DB_CONFIG):
         self.engine = create_async_engine(url, echo=True)
